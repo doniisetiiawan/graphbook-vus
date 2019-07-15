@@ -1,5 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const app = express();
 const port = 8000;
@@ -14,6 +15,7 @@ app.use(helmet.contentSecurityPolicy({
   },
 }));
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+app.use(compression())
 
 app.get('/', (req, res, next) => {
   console.log('first function');
