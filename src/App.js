@@ -28,24 +28,20 @@ class App extends Component {
     const { posts } = this.state;
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <div className="container">
-            <div className="feed">
-              {posts.map(post => (
-                <div key={post.id} className="post">
-                  <div className="header">
-                    <img src={post.user.avatar} alt="avatar" />
-                    <h2>{post.user.username}</h2>
-                  </div>
-                  <p className="content">
-                    {post.text}
-                  </p>
-                </div>
-              ))}
+      <div className="container">
+        <div className="feed">
+          {posts.map(post => (
+            <div key={post.id} className="post">
+              <div className="header">
+                <img src={post.user.avatar} alt="avatar" />
+                <h2>{post.user.username}</h2>
+              </div>
+              <p className="content">
+                {post.text}
+              </p>
             </div>
-          </div>
-        </header>
+          ))}
+        </div>
       </div>
     );
   }
