@@ -1,4 +1,4 @@
-const services from './services';
+import services from './services';
 
 const express = require('express');
 const helmet = require('helmet');
