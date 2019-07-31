@@ -1,22 +1,39 @@
 const typeDefinitions = `
-  type Post {
-    id: Int
-    text: String
-    user: User
-  }
-  
-  type User {
+type Post {
+  id: Int
+  text: String
+  user: User
+}
+
+type User {
   avatar: String
   username: String
 }
 
-  type RootQuery {
-    posts: [Post]
-  }
+input PostInput {
+  text: String!
+}
 
-  schema {
-    query: RootQuery
-  }
+input UserInput {
+  username: String!
+    avatar: String!
+}
+
+type RootMutation {
+  addPost (
+    post: PostInput!
+    user: UserInput!
+): Post
+}
+
+type RootQuery {
+  posts: [Post]
+}
+
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}
 `;
 
 export default [typeDefinitions];
