@@ -1,3 +1,5 @@
+const services from './services';
+
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -18,6 +20,17 @@ app.use(helmet.contentSecurityPolicy({
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 app.use(cors());
 app.use(compression());
+
+const serviceNames = Object.keys(services);
+
+for (let i = 0; i < serviceNames.length; i += 1) {
+  const name = serviceNames[i];
+  if (name === 'graphql') {
+    services[name].applyMiddleware({ app });
+  } else {
+    app.use(`/${name}`, services[name]);
+  }
+}
 
 app.get('/', (req, res, next) => {
   console.log('first function');
