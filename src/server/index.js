@@ -1,9 +1,10 @@
-import services from './services';
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import compression from 'compression';
 
-const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
-const compression = require('compression');
+import services from './services';
+import db from './database';
 
 const app = express();
 const port = 8000;
