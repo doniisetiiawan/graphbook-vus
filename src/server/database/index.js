@@ -1,15 +1,13 @@
 import Sequelize from 'sequelize';
+import configFile from '../config';
 
-const sequelize = new Sequelize('graphbook_ver', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  operatorsAliases: false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
-});
+const env = process.env.NODE_ENV || 'development';
+const config = configFile[env];
 
-export default sequelize;
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
+const db = {
+  sequelize,
+};
+
+export default db;
