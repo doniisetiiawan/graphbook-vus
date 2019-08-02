@@ -42,6 +42,7 @@ type RootMutation {
 type RootQuery {
   posts: [Post]
   chats: [Chat]
+  chat(chatId: Int): Chat
 }
 
 schema {
