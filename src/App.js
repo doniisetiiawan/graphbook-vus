@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-filename-extension,global-require */
 import React, { Component } from 'react';
-import './App.css';
 import { Helmet } from 'react-helmet';
+import './App.css';
 
 const posts = [{
   id: 2,
