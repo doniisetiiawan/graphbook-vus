@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.3",
+    "apollo-link": "^1.2.12",
+    "apollo-link-error": "^1.1.11",
+    "apollo-link-http": "^1.5.15",
     "apollo-server-express": "^2.8.0",
     "babel-plugin-require-context-hook": "^1.0.0",
     "compression": "^1.7.4",
