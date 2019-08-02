@@ -1,28 +1,22 @@
-/* eslint-disable react/jsx-filename-extension,global-require */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Helmet } from 'react-helmet';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import './App.css';
 
-const posts = [{
-  id: 2,
-  text: 'Lorem ipsum',
-  user: {
-    avatar: require('./uploads/avatar1.png'),
-    username: 'Test User',
-  },
-},
-{
-  id: 1,
-  text: 'Lorem ipsum',
-  user: {
-    avatar: require('./uploads/avatar2.png'),
-    username: 'Test User 2',
-  },
-}];
+const GET_POSTS = gql`{
+    posts {
+        id
+        text
+        user {
+            avatar
+            username
+        }
+    }
+}`;
 
-class App extends Component {
+class Feed extends Component {
   state = {
-    posts,
     postContent: '',
   };
 
@@ -48,14 +42,18 @@ class App extends Component {
   };
 
   render() {
-    const { posts, postContent } = this.state;
+    const { posts, loading, error } = this.props;
+    const { postContent } = this.state;
+
+    if (loading) {
+      return 'Loading...';
+    }
+    if (error) {
+      return error.message;
+    }
 
     return (
       <div className="container">
-        <Helmet>
-          <title>Graphbook - Feed</title>
-          <meta name="description" content="Newsfeed of all your friends on Graphbook" />
-        </Helmet>
         <div className="postForm">
           <form onSubmit={this.handleSubmit}>
             <textarea
@@ -84,4 +82,10 @@ class App extends Component {
   }
 }
 
-export default App;
+export default graphql(GET_POSTS, {
+  props: ({ data: { loading, error, posts } }) => ({
+    loading,
+    posts,
+    error,
+  }),
+})(Feed);
