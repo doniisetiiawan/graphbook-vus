@@ -58,6 +58,19 @@ class Feed extends Component {
                     data.posts.unshift(addPost);
                     store.writeQuery({ query: GET_POSTS, data });
                   }}
+                  optimisticResponse={{
+                    __typename: 'mutation',
+                    addPost: {
+                      __typename: 'Post',
+                      text: postContent,
+                      id: -1,
+                      user: {
+                        __typename: 'User',
+                        username: 'Loading...',
+                        avatar: '/public/loading.gif',
+                      },
+                    },
+                  }}
                 >
                   {addPost => (
                     <form onSubmit={(e) => {
@@ -85,7 +98,10 @@ class Feed extends Component {
               </div>
               <div className="feed">
                 {posts.map(post => (
-                  <div key={post.id} className="post">
+                  <div
+                    key={post.id}
+                    className={`post ${post.id < 0 ? 'optimistic' : ''}`}
+                  >
                     <div className="header">
                       <img src={post.user.avatar} alt="avatar" />
                       <h2>{post.user.username}</h2>
