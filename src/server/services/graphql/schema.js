@@ -33,10 +33,17 @@ input UserInput {
     avatar: String!
 }
 
+input ChatInput {
+  users: [Int]
+}
+
 type RootMutation {
   addPost (
     post: PostInput!
 ): Post
+  addChat (
+    chat: ChatInput!
+): Chat
 }
 
 type RootQuery {
