@@ -90,6 +90,23 @@ export default function resolver() {
           newChat.setUsers(chat.users),
         ]).then(() => newChat));
       },
+      addMessage(root, { message }, context) {
+        logger.log({
+          level: 'info',
+          message: 'Message was created',
+        });
+
+        return User.findAll().then((users) => {
+          const usersRow = users[0];
+
+          return Message.create({
+            ...message,
+          }).then(newMessage => Promise.all([
+            newMessage.setUser(usersRow.id),
+            newMessage.setChat(message.chatId),
+          ]).then(() => newMessage));
+        });
+      },
     },
   };
 

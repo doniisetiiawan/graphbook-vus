@@ -37,6 +37,11 @@ input ChatInput {
   users: [Int]
 }
 
+input MessageInput {
+  text: String!
+  chatId: Int!
+}
+
 type RootMutation {
   addPost (
     post: PostInput!
@@ -44,6 +49,9 @@ type RootMutation {
   addChat (
     chat: ChatInput!
 ): Chat
+  addMessage (
+    message: MessageInput!
+): Message
 }
 
 type RootQuery {
