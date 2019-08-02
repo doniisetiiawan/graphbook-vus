@@ -4,6 +4,7 @@
   "rules": {
     "react/jsx-one-expression-per-line": "off",
     "no-console": "off",
+    "no-undef": "off",
     "no-shadow": "off"
   }
 }
