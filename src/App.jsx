@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import Feed from './Feed';
+import Chats from './Chats';
 import './App.css';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <meta name="description" content="Newsfeed of all your friends on Graphbook" />
       </Helmet>
       <Feed />
+      <Chats />
     </div>
   );
 }
