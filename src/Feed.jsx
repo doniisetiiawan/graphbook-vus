@@ -41,7 +41,7 @@ class Feed extends Component {
     const { postContent } = this.state;
 
     return (
-      <Query query={GET_POSTS}>
+      <Query query={GET_POSTS} pollInterval={5000}>
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return error.message;
