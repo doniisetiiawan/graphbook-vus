@@ -132,6 +132,21 @@ export default function resolver() {
           ]).then(() => newMessage));
         });
       },
+      updatePost(root, { post, postId }, context) {
+        return Post.update({ ...post },
+          {
+            where: { id: postId },
+          }).then((rows) => {
+          if (rows[0] === 1) {
+            logger.log({
+              level: 'info',
+              message: `Post ${postId} was updated`,
+            });
+
+            return Post.findByPk(postId);
+          }
+        });
+      },
     },
   };
 

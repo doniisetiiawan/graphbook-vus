@@ -209,3 +209,50 @@ form [type=submit] {
     border: 1px solid #FF9566;
     width: 100%;
 }
+.dropdown .trigger > * {
+    display: block;
+    z-index: 1;
+}
+.dropdown .content {
+    position: absolute;
+}
+.dropdown div {
+    position: relative;
+}
+.post .header .dropdown {
+    float: right;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.post .header .dropdown:after {
+    height: 100%;
+    content: '';
+    font-size: 0;
+    vertical-align: middle;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.post .header .dropdown .content {
+    background-color: #fff;
+    border: 1px solid #333;
+    width: 150px;
+    text-align: center;
+    right: 0;
+}
+.dropdown button {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #333;
+    padding: 3px;
+}
+.dropdown button:last-child {
+    border-bottom: none;
+}
+.post .postForm {
+    padding: 10px;
+}
+.post .postForm form {
+    padding-bottom: 40px;
+}
