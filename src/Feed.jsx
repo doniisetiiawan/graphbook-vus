@@ -5,6 +5,7 @@ import { Mutation, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import Loading from './components/loading';
 import Error from './components/error';
+import Post from './components/post';
 import './App.css';
 
 const GET_POSTS = gql`
@@ -155,19 +156,7 @@ class Feed extends Component {
                   )}
                 >
                   {posts.map(post => (
-                    <div
-                      key={post.id}
-                      className={`post ${post.id < 0
-                        ? 'optimistic' : ''}`}
-                    >
-                      <div className="header">
-                        <img src={post.user.avatar} alt="avatar" />
-                        <h2>{post.user.username}</h2>
-                      </div>
-                      <p className="content">
-                        {post.text}
-                      </p>
-                    </div>
+                    <Post key={post.id} post={post} />
                   ))}
                 </InfiniteScroll>
               </div>
