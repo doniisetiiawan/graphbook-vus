@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 import Loading from './components/loading';
+import Error from './components/error';
 import './App.css';
 
 const GET_POSTS = gql`
@@ -83,7 +84,7 @@ class Feed extends Component {
           loading, error, data, fetchMore,
         }) => {
           if (loading) return <Loading />;
-          if (error) return error.message;
+          if (error) return <Error><p>{error.message}</p></Error>;
 
           const { postsFeed } = data;
           const { posts } = postsFeed;
