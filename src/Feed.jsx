@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import {Mutation, Query} from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
+import Loading from './components/loading';
 import './App.css';
 
 const GET_POSTS = gql`
@@ -81,7 +82,7 @@ class Feed extends Component {
         {({
           loading, error, data, fetchMore,
         }) => {
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Loading />;
           if (error) return error.message;
 
           const { postsFeed } = data;
