@@ -29,6 +29,10 @@ type PostFeed {
   posts: [Post]
 }
 
+type Response {
+  success: Boolean
+}
+
 input PostInput {
   text: String!
 }
@@ -61,6 +65,9 @@ updatePost (
   post: PostInput!
   postId: Int!
 ): Post
+deletePost (
+  postId: Int!
+): Response
 }
 
 type RootQuery {

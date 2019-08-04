@@ -147,6 +147,31 @@ export default function resolver() {
           }
         });
       },
+      deletePost(root, { postId }, context) {
+        return Post.destroy({
+          where: {
+            id: postId,
+          },
+        }).then((rows) => {
+          if (rows === 1) {
+            logger.log({
+              level: 'info',
+              message: `Post ${postId}was deleted`,
+            });
+            return {
+              success: true,
+            };
+          }
+          return {
+            success: false,
+          };
+        }, (err) => {
+          logger.log({
+            level: 'error',
+            message: err.message,
+          });
+        });
+      },
     },
   };
 
