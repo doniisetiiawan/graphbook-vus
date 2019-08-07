@@ -11,6 +11,7 @@
     "react/prop-types": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/anchor-is-valid": "off",
     "consistent-return": "warn",
     "react/forbid-prop-types": "warn"
   }
