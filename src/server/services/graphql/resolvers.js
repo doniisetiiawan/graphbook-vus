@@ -232,6 +232,35 @@ export default function resolver() {
           throw new Error('User not found');
         });
       },
+      signup(root, { email, password, username }, context) {
+        return User.findAll({
+          where: {
+            [Op.or]: [{ email }, { username }],
+          },
+          raw: true,
+        }).then(async (users) => {
+          if (users.length) {
+            throw new Error('User already exists');
+          } else {
+            return bcrypt.hash(
+              password, 10,
+            ).then(hash => User.create({
+              email,
+              password: hash,
+              username,
+              activated: 1,
+            }).then((newUser) => {
+              const token = JWT.sign(
+                { email, id: newUser.id }, JWT_SECRET,
+                { expiresIn: '1d' },
+              );
+              return {
+                token,
+              };
+            }));
+          }
+        });
+      },
     },
   };
 
