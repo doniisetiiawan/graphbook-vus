@@ -1,27 +1,21 @@
-import React, { createContext } from 'react';
+import React, { Component } from 'react';
+import { ApolloConsumer } from 'react-apollo';
 
-const { Provider, Consumer } = createContext();
-
-export function UserProvider(props) {
-  const { children } = props;
-  const user = {
-    username: 'Test User',
-    avatar: '/uploads/avatar1.png',
-  };
-  return (
-    <Provider value={user}>
-      {children}
-    </Provider>
-  );
-}
-
-export function UserConsumer(props) {
-  const { children } = props;
-  return (
-    <Consumer>
-      {user => React.Children.map(
-        children, child => React.cloneElement(child, { user }),
-      )}
-    </Consumer>
-  );
+export class UserConsumer extends Component {
+  render() {
+    const { children } = this.props;
+    return (
+      <ApolloConsumer>
+        {(client) => {
+          const user = {
+            username: 'Test User',
+            avatar: '/uploads/avatar1.png',
+          };
+          return React.Children.map(
+            children, child => React.cloneElement(child, { user }),
+          );
+        }}
+      </ApolloConsumer>
+    );
+  }
 }
