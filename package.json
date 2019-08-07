@@ -22,6 +22,7 @@
     "graphql-tools": "^4.0.5",
     "helmet": "^3.18.0",
     "mysql2": "^1.6.5",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
