@@ -33,6 +33,10 @@ type Response {
   success: Boolean
 }
 
+type UsersSearch {
+  users: [User]
+}
+
 input PostInput {
   text: String!
 }
@@ -75,6 +79,7 @@ type RootQuery {
   chats: [Chat]
   chat(chatId: Int): Chat
   postsFeed(page: Int, limit: Int): PostFeed
+  usersSearch(page: Int, limit: Int, text: String!): UsersSearch
 }
 
 schema {
