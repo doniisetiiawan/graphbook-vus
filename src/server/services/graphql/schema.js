@@ -37,6 +37,10 @@ type UsersSearch {
   users: [User]
 }
 
+type Auth {
+  token: String
+}
+
 input PostInput {
   text: String!
 }
@@ -72,6 +76,10 @@ updatePost (
 deletePost (
   postId: Int!
 ): Response
+login (
+  email: String!
+  password: String!
+): Auth
 }
 
 type RootQuery {
