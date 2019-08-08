@@ -1,5 +1,6 @@
 const typeDefinitions = `
 directive @auth on QUERY | FIELD_DEFINITION | FIELD
+scalar Upload
 
 type Post {
   id: Int
@@ -41,6 +42,11 @@ type UsersSearch {
 
 type Auth {
   token: String
+}
+
+type File {
+  filename: String!
+  url: String!
 }
 
 input PostInput {
@@ -87,6 +93,9 @@ signup (
   email: String!
   password: String!
 ): Auth
+uploadAvatar (
+  file: Upload!
+): File @auth
 }
 
 type RootQuery {

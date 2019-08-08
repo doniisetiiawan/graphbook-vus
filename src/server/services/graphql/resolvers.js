@@ -2,7 +2,13 @@ import Sequelize from 'sequelize';
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import aws from 'aws-sdk';
 import logger from '../../helpers/logger';
+
+const s3 = new aws.S3({
+  signatureVersion: 'v4',
+  region: 'eu-central-1',
+});
 
 dotenv.config();
 const { JWT_SECRET } = process.env;
@@ -249,6 +255,31 @@ export default function resolver() {
             }));
           }
         });
+      },
+      async uploadAvatar(root, { file }, context) {
+        const {
+          stream, filename, mimetype, encoding,
+        } = await file;
+        const bucket = 'apollobook';
+        const params = {
+          Bucket: bucket,
+          Key: `${context.user.id}/${filename}`,
+          ACL: 'public-read',
+          Body: stream,
+        };
+
+        const response = await s3.upload(params).promise();
+
+        return User.update({
+          avatar: response.Location,
+        }, {
+          where: {
+            id: context.user.id,
+          },
+        }).then(() => ({
+          filename,
+          url: response.Location,
+        }));
       },
     },
   };
