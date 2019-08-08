@@ -47,23 +47,13 @@ export default function resolver() {
         return Post.findAll({ order: [['createdAt', 'DESC']] });
       },
       chats(root, args, context) {
-        return User.findAll().then((users) => {
-          if (!users.length) {
-            return [];
-          }
-
-          const usersRow = users[0];
-
-          return Chat.findAll({
-            include: [{
-              model: User,
-              required: true,
-              through: { where: { userId: usersRow.id } },
-            },
-            {
-              model: Message,
-            }],
-          });
+        return Chat.findAll({
+          include: [{
+            model: User,
+            required: true,
+            through: { where: { userId: context.user.id } },
+          },
+          { model: Message }],
         });
       },
       chat(root, { chatId }, context) {
