@@ -6,6 +6,7 @@ import Bar from './components/bar';
 import './components/fontawesome';
 import './App.css';
 import LoginRegisterForm from './components/loginregister';
+import CurrentUserQuery from './components/queries/currentUser';
 
 class App extends Component {
    state = {
@@ -35,11 +36,11 @@ class App extends Component {
           />
         </Helmet>
         {loggedIn ? (
-          <div>
+          <CurrentUserQuery>
             <Bar />
             <Feed />
             <Chats />
-          </div>
+          </CurrentUserQuery>
         ) : <LoginRegisterForm changeLoginState={this.changeLoginState} />}
       </div>
     );

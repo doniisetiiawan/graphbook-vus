@@ -113,6 +113,9 @@ export default function resolver() {
           users: User.findAll(query),
         };
       },
+      currentUser(root, args, context) {
+        return context.user;
+      },
     },
     RootMutation: {
       addPost(root, { post }, context) {
@@ -146,16 +149,12 @@ export default function resolver() {
           message: 'Message was created',
         });
 
-        return User.findAll().then((users) => {
-          const usersRow = users[0];
-
-          return Message.create({
-            ...message,
-          }).then(newMessage => Promise.all([
-            newMessage.setUser(usersRow.id),
-            newMessage.setChat(message.chatId),
-          ]).then(() => newMessage));
-        });
+        return Message.create({
+          ...message,
+        }).then(newMessage => Promise.all([
+          newMessage.setUser(context.user.id),
+          newMessage.setChat(message.chatId),
+        ]).then(() => newMessage));
       },
       updatePost(root, { post, postId }, context) {
         return Post.update({ ...post },
