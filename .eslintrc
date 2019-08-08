@@ -14,6 +14,7 @@
     "jsx-a11y/anchor-is-valid": "off",
     "consistent-return": "warn",
     "array-callback-return": "warn",
+    "jsx-a11y/no-noninteractive-element-interactions": "warn",
     "react/forbid-prop-types": "warn"
   }
 }

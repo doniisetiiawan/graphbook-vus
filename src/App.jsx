@@ -4,10 +4,11 @@ import { withApollo } from 'react-apollo';
 import Feed from './Feed';
 import Chats from './Chats';
 import Bar from './components/bar';
-import './components/fontawesome';
-import './App.css';
 import LoginRegisterForm from './components/loginregister';
 import CurrentUserQuery from './components/queries/currentUser';
+import './components/fontawesome';
+import './App.css';
+import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
 
 class App extends Component {
   constructor(props) {
