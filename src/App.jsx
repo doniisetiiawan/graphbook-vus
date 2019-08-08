@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
+import { withApollo } from 'react-apollo';
 import Feed from './Feed';
 import Chats from './Chats';
 import Bar from './components/bar';
@@ -9,6 +10,13 @@ import LoginRegisterForm from './components/loginregister';
 import CurrentUserQuery from './components/queries/currentUser';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.unsubscribe = props.client.onResetStore(
+      () => this.changeLoginState(false),
+    );
+  }
+
    state = {
      loggedIn: false,
    };
@@ -18,6 +26,10 @@ class App extends Component {
      if (token) {
        this.setState({ loggedIn: true });
      }
+   }
+
+   componentWillUnmount() {
+     this.unsubscribe();
    }
 
   changeLoginState = (loggedIn) => {
@@ -37,7 +49,7 @@ class App extends Component {
         </Helmet>
         {loggedIn ? (
           <CurrentUserQuery>
-            <Bar />
+            <Bar changeLoginState={this.changeLoginState} />
             <Feed />
             <Chats />
           </CurrentUserQuery>
@@ -47,4 +59,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withApollo(App);
