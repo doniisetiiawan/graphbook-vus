@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import Main from './Main';
 import LoginRegisterForm from './components/loginregister';
+import User from './User';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -45,10 +46,6 @@ function NotFound() {
 export default function Routing(props) {
   const { changeLoginState } = props;
   const { loggedIn } = props;
-  const {
-    loggedIn: loggedIn1,
-    changeLoginState: changeLoginState1,
-  } = props;
   return (
     <Router>
       <Switch>
@@ -60,8 +57,22 @@ export default function Routing(props) {
         <LoginRoute
           exact
           path="/"
-          component={() => <LoginRegisterForm changeLoginState={changeLoginState1} />}
-          loggedIn={loggedIn1}
+          component={() => (
+            <LoginRegisterForm
+              changeLoginState={changeLoginState}
+            />
+          )}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          path="/user/:username"
+          component={props => (
+            <User
+              {...props}
+              changeLoginState={changeLoginState}
+            />
+          )}
+          loggedIn={loggedIn}
         />
         <Route component={NotFound} />
       </Switch>

@@ -1,0 +1,44 @@
+import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import Loading from '../loading';
+import Error from '../error';
+
+const GET_USER = gql`
+    query user($username: String!) {
+        user(username: $username) {
+            id
+            email
+            username
+            avatar
+        }
+    }
+`;
+
+export default class UserQuery extends Component {
+  getVariables() {
+    const { variables } = this.props;
+    const queryVariables = {};
+    if (typeof variables.username !== typeof undefined) {
+      queryVariables.username = variables.username;
+    }
+    return queryVariables;
+  }
+
+  render() {
+    const { children } = this.props;
+    const variables = this.getVariables();
+    return (
+      <Query query={GET_USER} variables={variables}>
+        {({ loading, error, data }) => {
+          if (loading) return <Loading />;
+          if (error) return <Error><p>{error.message}</p></Error>;
+          const { user } = data;
+          return React.Children.map(
+            children, child => React.cloneElement(child, { user }),
+          );
+        }}
+      </Query>
+    );
+  }
+}
