@@ -37,6 +37,11 @@ const LoginRoute = ({ component: Component, ...rest }) => (
   />
 );
 
+function NotFound() {
+  return (
+    <Redirect to="/" />);
+}
+
 export default function Routing(props) {
   const { changeLoginState } = props;
   const { loggedIn } = props;
@@ -58,6 +63,7 @@ export default function Routing(props) {
           component={() => <LoginRegisterForm changeLoginState={changeLoginState1} />}
           loggedIn={loggedIn1}
         />
+        <Route component={NotFound} />
       </Switch>
     </Router>
   );
