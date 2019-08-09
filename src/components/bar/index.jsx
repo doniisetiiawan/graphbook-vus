@@ -3,6 +3,7 @@ import SearchBar from './search';
 import UserBar from './user';
 import { UserConsumer } from '../context/user';
 import Logout from './logout';
+import Home from './home';
 
 export default function Bar(props) {
   const { changeLoginState } = props;
@@ -15,6 +16,7 @@ export default function Bar(props) {
         </UserConsumer>
       </div>
       <div className="buttons">
+        <Home />
         <Logout changeLoginState={changeLoginState} />
       </div>
     </div>
