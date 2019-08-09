@@ -1,10 +1,19 @@
 import React from 'react';
-import {
-  BrowserRouter as Router, Redirect, Route, Switch,
-} from 'react-router-dom';
 import Main from './Main';
 import LoginRegisterForm from './components/loginregister';
 import User from './User';
+
+const ReactRouter = require('react-router-dom');
+
+let Router;
+if (typeof window !== typeof undefined) {
+  const { BrowserRouter } = ReactRouter;
+  Router = BrowserRouter;
+} else {
+  const { StaticRouter } = ReactRouter;
+  Router = StaticRouter;
+}
+const { Route, Redirect, Switch } = ReactRouter;
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -48,8 +57,9 @@ function NotFound() {
 export default function Routing(props) {
   const { changeLoginState } = props;
   const { loggedIn } = props;
+  const { context, location } = props;
   return (
-    <Router>
+    <Router context={context} location={location}>
       <Switch>
         <PrivateRoute
           path="/app"
