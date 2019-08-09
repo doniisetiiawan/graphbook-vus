@@ -73,7 +73,7 @@ export default function resolver() {
           }],
         });
       },
-      postsFeed(root, { page, limit }, context) {
+      postsFeed(root, { page, limit, username }, context) {
         let skip = 0;
 
         if (page && limit) {
@@ -87,6 +87,11 @@ export default function resolver() {
 
         if (limit) {
           query.limit = limit;
+        }
+
+        if (typeof username !== typeof undefined) {
+          query.include = [{ model: User }];
+          query.where = { '$User.username$': username };
         }
 
         return {
@@ -121,6 +126,13 @@ export default function resolver() {
       },
       currentUser(root, args, context) {
         return context.user;
+      },
+      user(root, { username }, context) {
+        return User.findOne({
+          where: {
+            username,
+          },
+        });
       },
     },
     RootMutation: {
