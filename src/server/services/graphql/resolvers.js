@@ -180,7 +180,7 @@ export default function resolver() {
               {messageAdded: newMessage});
             return newMessage;
           });
-        );
+        });
       },
       updatePost(root, { post, postId }, context) {
         return Post.update({ ...post },
