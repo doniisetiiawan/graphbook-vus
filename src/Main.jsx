@@ -3,6 +3,7 @@ import Feed from './Feed';
 import Chats from './Chats';
 import Bar from './components/bar';
 import CurrentUserQuery from './components/queries/currentUser';
+import { UserConsumer } from './components/context/user';
 
 export default function Main(props) {
   const { changeLoginState } = props;
@@ -10,7 +11,9 @@ export default function Main(props) {
     <CurrentUserQuery>
       <Bar changeLoginState={changeLoginState} />
       <Feed />
-      <Chats />
+      <UserConsumer>
+        <Chats />
+      </UserConsumer>
     </CurrentUserQuery>
   );
 }

@@ -34,18 +34,21 @@ class Chats extends Component {
   };
 
   render() {
+    const { user } = this.props;
     const { openChats } = this.state;
 
     return (
       <div className="wrapper">
         <ChatsQuery>
-          <ChatsList openChat={this.openChat} />
+          <ChatsList openChat={this.openChat} user={user} />
         </ChatsQuery>
-
         <div className="openChats">
           {openChats.map(chatId => (
-            <ChatQuery key={`chatWindow${chatId}`} variables={{ chatId }}>
-              <ChatWindow closeChat={this.closeChat} />
+            <ChatQuery
+              key={`chatWindow${chatId}`}
+              variables={{ chatId }}
+            >
+              <ChatWindow closeChat={this.closeChat} user={user} />
             </ChatQuery>
           ))}
         </div>
