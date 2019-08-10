@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 
-export default function htmlTemplate(content) {
+export default function htmlTemplate(content, head) {
   return `
 <html lang="en">
 <head>

@@ -6,7 +6,8 @@ import Router from '../../router';
 
 class App extends Component {
   state = {
-    loggedIn: false,
+    // eslint-disable-next-line react/destructuring-assignment
+    loggedIn: this.props.loggedIn,
   };
 
   changeLoginState = (loggedIn) => {

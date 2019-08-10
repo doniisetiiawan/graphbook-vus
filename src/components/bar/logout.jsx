@@ -3,10 +3,12 @@ import { withApollo } from 'react-apollo';
 
 class Logout extends Component {
   logout = () => {
-    localStorage.removeItem('jwt');
-    const { client, changeLoginState } = this.props;
-    changeLoginState(false);
-    client.resetStore();
+    const { logout: logout1 } = this.props;
+    logout1().then(() => {
+      localStorage.removeItem('jwt');
+      const { client } = this.props;
+      client.resetStore();
+    });
   };
 
   render() {

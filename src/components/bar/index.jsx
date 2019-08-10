@@ -4,6 +4,7 @@ import UserBar from './user';
 import { UserConsumer } from '../context/user';
 import Logout from './logout';
 import Home from './home';
+import LogoutMutation from '../mutations/logout';
 
 export default function Bar(props) {
   const { changeLoginState } = props;
@@ -17,7 +18,9 @@ export default function Bar(props) {
       </div>
       <div className="buttons">
         <Home />
-        <Logout changeLoginState={changeLoginState} />
+        <LogoutMutation>
+          <Logout changeLoginState={changeLoginState} />
+        </LogoutMutation>
       </div>
     </div>
   );

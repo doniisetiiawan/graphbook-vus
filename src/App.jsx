@@ -18,13 +18,6 @@ class App extends Component {
      loggedIn: false,
    };
 
-   componentWillMount() {
-     const token = localStorage.getItem('jwt');
-     if (token) {
-       this.setState({ loggedIn: true });
-     }
-   }
-
    componentWillUnmount() {
      this.unsubscribe();
    }
