@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 import aws from 'aws-sdk';
+import { PubSub, withFilter } from 'graphql-subscriptions';
 import logger from '../../helpers/logger';
+
+const pubsub = new PubSub();
 
 const s3 = new aws.S3({
   signatureVersion: 'v4',
@@ -166,13 +169,18 @@ export default function resolver() {
           level: 'info',
           message: 'Message was created',
         });
-
         return Message.create({
           ...message,
-        }).then(newMessage => Promise.all([
-          newMessage.setUser(context.user.id),
-          newMessage.setChat(message.chatId),
-        ]).then(() => newMessage));
+        }).then((newMessage) => {
+          return Promise.all([
+            newMessage.setUser(context.user.id),
+            newMessage.setChat(message.chatId),
+          ]).then(() => {
+            pubsub.publish('messageAdded',
+              {messageAdded: newMessage});
+            return newMessage;
+          });
+        );
       },
       updatePost(root, { post, postId }, context) {
         return Post.update({ ...post },
@@ -340,6 +348,11 @@ export default function resolver() {
         return {
           message: true,
         };
+      },
+    },
+    RootSubscription: {
+      messageAdded: {
+        subscribe: () => pubsub.asyncIterator(['messageAdded']),
       },
     },
   };

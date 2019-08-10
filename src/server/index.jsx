@@ -12,6 +12,7 @@ import { Helmet } from 'react-helmet';
 import Cookies from 'cookies';
 import JWT from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { createServer } from 'http';
 
 import config from '../../webpack.server.config';
 import ApolloClient from './ssr/apollo';
@@ -30,6 +31,7 @@ const utils = {
 const services = servicesLoader(utils);
 
 const app = express();
+const server = createServer(app);
 const port = 8000;
 
 if (process.env.NODE_ENV === 'production') {
@@ -64,10 +66,19 @@ app.use(
 const serviceNames = Object.keys(services);
 for (let i = 0; i < serviceNames.length; i += 1) {
   const name = serviceNames[i];
-  if (name === 'graphql') {
-    services[name].applyMiddleware({ app });
-  } else {
-    app.use(`/${name}`, services[name]);
+  switch (name) {
+    case 'graphql':
+      services[name].applyMiddleware({ app });
+      break;
+    case 'subscriptions':
+      server.listen(port, () => {
+        console.log('Listening on port 8000!');
+        services[name](server);
+      });
+      break;
+    default:
+      app.use(`/${name}`, services[name]);
+      break;
   }
 }
 
@@ -107,5 +118,3 @@ app.get('*', async (req, res) => {
     }
   });
 });
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
