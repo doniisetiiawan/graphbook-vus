@@ -43,7 +43,8 @@ const client = new ApolloClient({
       credentials: 'same-origin',
     }),
   ]),
-  cache: new InMemoryCache(),
+  // eslint-disable-next-line no-underscore-dangle
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
 });
 
 export default client;

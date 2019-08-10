@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { withApollo } from 'react-apollo';
@@ -15,7 +16,9 @@ class App extends Component {
   }
 
    state = {
-     loggedIn: false,
+     loggedIn: (typeof window.__APOLLO_STATE__ !== typeof undefined
+       && typeof window.__APOLLO_STATE__.ROOT_QUERY !== typeof undefined
+       && typeof window.__APOLLO_STATE__.ROOT_QUERY.currentUser !== typeof undefined),
    };
 
    componentWillUnmount() {

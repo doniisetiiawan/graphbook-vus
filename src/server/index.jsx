@@ -7,7 +7,7 @@ import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 import webpack from 'webpack';
 import React from 'react';
-import ReactDOM from 'react-dom/server';
+import { renderToStringWithData } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import Cookies from 'cookies';
 import JWT from 'jsonwebtoken';
@@ -83,7 +83,7 @@ app.get('*', async (req, res) => {
     loggedIn = false;
   }
 
-  const client = ApolloClient(req);
+  const client = ApolloClient(req, loggedIn);
   const context = {};
   const App = (
     <Graphbook
@@ -93,15 +93,19 @@ app.get('*', async (req, res) => {
       context={context}
     />
   );
-  const content = ReactDOM.renderToString(App);
-  if (context.url) {
-    res.redirect(301, context.url);
-  } else {
-    const head = Helmet.renderStatic();
-    res.status(200);
-    res.send(`<!doctype html>\n${template(content, head)}`);
-    res.end();
-  }
+  renderToStringWithData(App).then((content) => {
+    if (context.url) {
+      res.redirect(301, context.url);
+    } else {
+      const initialState = client.extract();
+      const head = Helmet.renderStatic();
+      res.status(200);
+      res.send(`<!doctype html>\n${template(
+        content, head, initialState,
+      )}`);
+      res.end();
+    }
+  });
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
