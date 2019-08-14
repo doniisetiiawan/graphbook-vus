@@ -401,3 +401,6 @@ button.uploadAvatar {
     width: 250px;
     vertical-align: middle;
 }
+.Toastify__toast-container--top-left {
+    top: 4em !important;
+}

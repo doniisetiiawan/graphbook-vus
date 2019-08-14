@@ -6,6 +6,7 @@ import Router from './router';
 import './components/fontawesome';
 import './App.css';
 import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   constructor(props) {
