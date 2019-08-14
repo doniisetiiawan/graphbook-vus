@@ -171,16 +171,14 @@ export default function resolver() {
         });
         return Message.create({
           ...message,
-        }).then((newMessage) => {
-          return Promise.all([
-            newMessage.setUser(context.user.id),
-            newMessage.setChat(message.chatId),
-          ]).then(() => {
-            pubsub.publish('messageAdded',
-              {messageAdded: newMessage});
-            return newMessage;
-          });
-        });
+        }).then(newMessage => Promise.all([
+          newMessage.setUser(context.user.id),
+          newMessage.setChat(message.chatId),
+        ]).then(() => {
+          pubsub.publish('messageAdded',
+            { messageAdded: newMessage });
+          return newMessage;
+        }));
       },
       updatePost(root, { post, postId }, context) {
         return Post.update({ ...post },
@@ -352,7 +350,24 @@ export default function resolver() {
     },
     RootSubscription: {
       messageAdded: {
-        subscribe: () => pubsub.asyncIterator(['messageAdded']),
+        subscribe: withFilter(
+          () => pubsub.asyncIterator('messageAdded'),
+          (payload, variables, context) => {
+            if (payload.messageAdded.UserId !== context.user.id) {
+              return Chat.findOne({
+                where: {
+                  id: payload.messageAdded.ChatId,
+                },
+                include: [{
+                  model: User,
+                  required: true,
+                  through: { where: { userId: context.user.id } },
+                }],
+              }).then(chat => chat !== null);
+            }
+            return false;
+          },
+        ),
       },
     },
   };

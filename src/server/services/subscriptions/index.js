@@ -23,6 +23,23 @@ export default utils => (server) => {
     execute,
     subscribe,
     schema: executableSchema,
+    onConnect: async (params, socket) => {
+      const authorization = params.authToken;
+      if (typeof authorization !== typeof undefined) {
+        const search = 'Bearer';
+        const regEx = new RegExp(search, 'ig');
+        const token = authorization.replace(regEx, '').trim();
+        return jwt.verify(token, JWT_SECRET, (err, result) => {
+          if (err) {
+            throw new Error('Missing auth token!');
+          } else {
+            return utils.db.models.User.findByPk(result.id)
+              .then(user => Object.assign({}, socket.upgradeReq, { user }));
+          }
+        });
+      }
+      throw new Error('Missing auth token!');
+    },
   },
   {
     server,
