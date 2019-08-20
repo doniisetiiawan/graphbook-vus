@@ -7,14 +7,18 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloLink, split } from 'apollo-link';
+import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 
 const protocol = (location.protocol !== 'https:') ? 'ws://' : 'wss://';
 const port = location.port ? `:${location.port}` : '';
 
-const httpLink = createUploadLink({
-  uri: `${location.protocol}//${location.hostname}${port}/graphql`,
-  credentials: 'same-origin',
-});
+const httpLink = createPersistedQueryLink().concat(
+  createUploadLink({
+    uri: `${location.protocol}//${location.hostname}${port
+    }/graphql`,
+    credentials: 'same-origin',
+  }),
+);
 
 const SUBSCRIPTIONS_ENDPOINT = `${protocol + location.hostname + port}/subscriptions`;
 const subClient = new SubscriptionClient(SUBSCRIPTIONS_ENDPOINT, {

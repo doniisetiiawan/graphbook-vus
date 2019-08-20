@@ -5,6 +5,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'node-fetch';
+import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 
 export default (req, loggedIn) => {
   const AuthLink = (operation, next) => {
@@ -51,11 +52,11 @@ export default (req, loggedIn) => {
       }),
       InfoLink,
       AuthLink,
-      new HttpLink({
+      createPersistedQueryLink().concat(new HttpLink({
         uri: 'http://localhost:8000/graphql',
         credentials: 'same-origin',
-        fetch,
-      }),
+        fetch
+      })),
     ]),
     cache: new InMemoryCache(),
   });

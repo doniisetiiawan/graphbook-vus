@@ -41,6 +41,11 @@ export default (utils) => {
         };
       },
     },
+    cacheControl: {
+      defaultMaxAge: 5,
+      stripFormattedExtensions: false,
+      calculateCacheControlHeaders: true,
+    },
     context: async ({ req }) => {
       const { authorization } = req.headers;
       if (typeof authorization !== typeof undefined) {
