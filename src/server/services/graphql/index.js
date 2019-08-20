@@ -7,7 +7,7 @@ import Schema from './schema';
 import auth from './auth';
 
 dotenv.config();
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, ENGINE_API_KEY } = process.env;
 
 export default (utils) => {
   const executableSchema = makeExecutableSchema({
@@ -20,6 +20,9 @@ export default (utils) => {
 
   return new ApolloServer({
     schema: executableSchema,
+    engine: {
+      apiKey: ENGINE_API_KEY,
+    },
     context: async ({ req }) => {
       const { authorization } = req.headers;
       if (typeof authorization !== typeof undefined) {
