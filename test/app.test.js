@@ -6,6 +6,7 @@ require('babel-plugin-require-context-hook/register')();
 
 describe('Graphbook application test', function () {
   let app;
+  let authToken;
   this.timeout(50000);
 
   before((done) => {
@@ -56,6 +57,31 @@ describe('Graphbook application test', function () {
         assert.ok(res.req.path === '/');
         assert.ok(body.indexOf('<html') !== -1);
         assert.ok(body.indexOf('class="authModal"') !== -1);
+        done(err);
+      });
+    });
+
+    it('allows the user to sign up', (done) => {
+      const json = {
+        operationName: null,
+        query: 'mutation signup($username: String!, $email : String!, $password : String!) { signup(username: $username, email: $email, password : $password) { token }}',
+        variables: {
+          email: 'mocha@test.com',
+          username: 'mochatest',
+          password: '123456789',
+        },
+      };
+
+      request.post({
+        url: 'http://localhost:8000/graphql',
+        json,
+      }, (err, res, body) => {
+        should.not.exist(err);
+        should.exist(res);
+        expect(res.statusCode).to.be.equal(200);
+        body.should.be.an('object');
+        body.should.have.property('data');
+        authToken = body.data.signup.token;
         done(err);
       });
     });
