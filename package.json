@@ -42,6 +42,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-toastify": "^5.3.2",
+    "request": "^2.88.0",
     "sequelize": "^5.12.2",
     "subscriptions-transport-ws": "^0.9.16",
     "winston": "^3.2.1"
@@ -51,7 +52,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "NODE_ENV=development nodemon --watch src/server src/server/index.jsx --exec babel-node"
+    "server": "NODE_ENV=development nodemon --watch src/server src/server/index.jsx --exec babel-node",
+    "test-ulr": "mocha --exit test/ --require babel-hook --require @babel/polyfill --recursive"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -78,17 +80,21 @@
     "@babel/plugin-proposal-function-sent": "^7.5.0",
     "@babel/plugin-proposal-numeric-separator": "^7.2.0",
     "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.5.5",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-css-modules-transform": "^1.6.2",
+    "chai": "^4.2.0",
     "css-loader": "^3.2.0",
     "eslint": "^6.0.1",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
+    "mocha": "^6.2.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^1.19.1",
     "react-styleguidist": "^9.1.13",
