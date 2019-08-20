@@ -85,5 +85,29 @@ describe('Graphbook application test', function () {
         done(err);
       });
     });
+
+    it('allows the user to query all chats', (done) => {
+      const json = {
+        operationName: null,
+        query: 'query {chats {id users {id avatar username}}}',
+        variables: {},
+      };
+
+      request.post({
+        url: 'http://localhost:8000/graphql',
+        headers: {
+          Authorization: authToken,
+        },
+        json,
+      }, (err, res, body) => {
+        should.not.exist(err);
+        should.exist(res);
+        expect(res.statusCode).to.be.equal(200);
+        body.should.be.an('object');
+        body.should.have.property('data');
+        body.data.should.have.property('chats').with.lengthOf(0);
+        done(err);
+      });
+    });
   });
 });
