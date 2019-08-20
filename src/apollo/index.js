@@ -38,6 +38,19 @@ const link = split(
   httpLink,
 );
 
+const InfoLink = (operation, next) => {
+  operation.setContext(context => ({
+    ...context,
+    headers: {
+      ...context.headers,
+      'apollo-client-name': 'Apollo Frontend Client',
+      'apollo-client-version': '1',
+    },
+  }));
+
+  return next(operation);
+};
+
 const AuthLink = (operation, next) => {
   const token = localStorage.getItem('jwt');
   if (token) {
@@ -71,6 +84,7 @@ const client = new ApolloClient({
         }
       }
     }),
+    InfoLink,
     AuthLink,
     link,
   ]),

@@ -20,6 +20,19 @@ export default (req, loggedIn) => {
     return next(operation);
   };
 
+  const InfoLink = (operation, next) => {
+    operation.setContext(context => ({
+      ...context,
+      headers: {
+        ...context.headers,
+        'apollo-client-name': 'Apollo Backend Client',
+        'apollo-client-version': '1',
+      },
+    }));
+
+    return next(operation);
+  };
+
   return new ApolloClient({
     ssrMode: true,
     link: ApolloLink.from([
@@ -36,6 +49,7 @@ export default (req, loggedIn) => {
           }
         }
       }),
+      InfoLink,
       AuthLink,
       new HttpLink({
         uri: 'http://localhost:8000/graphql',
