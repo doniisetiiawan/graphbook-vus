@@ -1,8 +1,31 @@
+/* eslint-disable react/jsx-filename-extension */
+import React from 'react';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink } from 'apollo-link';
+import { createUploadLink } from 'apollo-upload-client';
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import register from 'ignore-styles';
+import App from '../src/server/ssr';
+
 const assert = require('assert');
 const request = require('request');
 const { expect } = require('chai');
 const should = require('chai').should();
 require('babel-plugin-require-context-hook/register')();
+require('isomorphic-fetch');
+
+configure({ adapter: new Adapter() });
+register(['.css', '.sass', '.scss']);
+
+const { JSDOM } = require('jsdom');
+
+const dom = new JSDOM('<!doctype html><html><body></body></html>',
+  { url: 'http://graphbook.test' });
+const { window } = dom;
+global.window = window;
+global.document = window.document;
 
 describe('Graphbook application test', function () {
   let app;
@@ -108,6 +131,77 @@ describe('Graphbook application test', function () {
         body.data.should.have.property('chats').with.lengthOf(0);
         done(err);
       });
+    });
+  });
+
+  describe('frontend', () => {
+    it('renders and switches to the login or register form', (done) => {
+      const httpLink = createUploadLink({
+        uri: 'http://localhost:8000/graphql',
+        credentials: 'same-origin',
+      });
+      const client = new ApolloClient({
+        link: ApolloLink.from([
+          httpLink,
+        ]),
+        cache: new InMemoryCache(),
+      });
+
+      function Graphbook() {
+        return (
+          <App client={client} context={{}} loggedIn={false} location="/" />
+        );
+      }
+
+      const wrapper = mount(<Graphbook />);
+
+      expect(wrapper.html()).to.contain('<a>Want to sign up? Click here</a>');
+      wrapper.find('LoginRegisterForm').find('a').simulate('click');
+      expect(wrapper.html()).to.contain('<a>Want to login? Click here</a>');
+      done();
+    });
+
+    it('renders the current user in the top bar', (done) => {
+      const AuthLink = (operation, next) => {
+        operation.setContext(context => ({
+          ...context,
+          headers: {
+            ...context.headers,
+            Authorization: authToken,
+          },
+        }));
+        return next(operation);
+      };
+
+      const httpLink = createUploadLink({
+        uri: 'http://localhost:8000/graphql',
+        credentials: 'same-origin',
+      });
+
+      const client = new ApolloClient({
+        link: ApolloLink.from([
+          AuthLink,
+          httpLink,
+        ]),
+        cache: new InMemoryCache(),
+      });
+
+      function Graphbook() {
+        return (
+          <App
+            client={client}
+            context={{}}
+            loggedIn
+            location="/app"
+          />
+        );
+      }
+
+      const wrapper = mount(<Graphbook />);
+      setTimeout(() => {
+        expect(wrapper.html()).to.contain('mochatest');
+        done();
+      }, 2000);
     });
   });
 });
