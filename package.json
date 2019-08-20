@@ -54,8 +54,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "build-mbh": "yarn run client:build && yarn run server:build",
+    "client:build": "webpack --config webpack.client.build.config.js",
+    "server:build": "webpack --config webpack.server.build.config.js",
     "server": "NODE_ENV=development nodemon --watch src/server src/server/index.jsx --exec babel-node",
-    "test-ulr": "mocha --exit test/ --require babel-hook --require @babel/polyfill --recursive"
+    "server:production": "node dist/server/bundle.js",
+    "test-ulr": "yarn run build-mbh && mocha --exit test/ --require babel-hook --require @babel/polyfill --recursive"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -113,6 +117,7 @@
     "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-middleware": "^3.7.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-node-externals": "^1.7.2"
   }
 }

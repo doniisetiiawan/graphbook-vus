@@ -11,6 +11,9 @@
     "@babel/plugin-proposal-throw-expressions",
     ["@babel/plugin-proposal-class-properties", { "loose": false }],
     "require-context-hook",
-    "css-modules-transform"
+    "css-modules-transform",
+    "@babel/plugin-syntax-dynamic-import",
+    "react-loadable/babel",
+    "dynamic-import-node"
   ]
 }
