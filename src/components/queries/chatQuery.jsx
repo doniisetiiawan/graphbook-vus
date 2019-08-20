@@ -41,13 +41,13 @@ export default class UserQuery extends Component {
     const variables = this.getVariables();
     return (
       <Query query={GET_CHAT} variables={variables}>
-        {({ loading, error, data }) => {
+        {({ loading, error, data, subscribeToMore }) => {
           if (loading) return <Loading />;
           if (error) return <Error><p>{error.message}</p></Error>;
 
           const { chat } = data;
           return React.Children.map(
-            children, child => React.cloneElement(child, { chat }),
+            children, child => React.cloneElement(child, { chat, subscribeToMore }),
           );
         }}
       </Query>

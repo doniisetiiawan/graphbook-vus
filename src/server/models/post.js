@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define('Post', {
     text: DataTypes.TEXT,
