@@ -105,7 +105,7 @@
     "eslint-plugin-react": "^7.14.2",
     "ignore-styles": "^5.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^6.2.0",
     "node-fetch": "^2.6.0",
